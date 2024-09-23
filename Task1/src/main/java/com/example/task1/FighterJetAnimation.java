@@ -13,9 +13,9 @@ import javafx.stage.Stage;
 
 public class FighterJetAnimation extends Application {
 
-    private double deltaX = 2;
+    private double deltaX = 0;
     private double deltaY = 0;
-    private Polygon fighterJet;
+    private Group helicopter;
 
     @Override
     public void start(Stage primaryStage) {
@@ -23,11 +23,11 @@ public class FighterJetAnimation extends Application {
         Group background = createBackground();
 
         // Создаем форму истребителя
-        fighterJet = createFighterJet();
+        helicopter = createFighterJet();
 
         // Создаем группу и добавляем фон и истребитель
         Group root = new Group();
-        root.getChildren().addAll(background, fighterJet);
+        root.getChildren().addAll(background, helicopter);
 
         Scene scene = new Scene(root, 800, 600);
         primaryStage.setTitle("Fighter Jet Animation");
@@ -92,39 +92,65 @@ public class FighterJetAnimation extends Application {
     }
 
     // Метод для создания истребителя
-    private Polygon createFighterJet() {
-        Polygon fighterJet = new Polygon();
-        fighterJet.getPoints().addAll(new Double[]{
-                0.0, 0.0,
-                30.0, -10.0,
-                20.0, 0.0,
-                30.0, 10.0,
-                0.0, 0.0,
-                -20.0, 5.0,
-                -20.0, -5.0
+    private Group createFighterJet() {
+        Group helicopter = new Group();
+
+        // Создаем корпус вертолета
+        Polygon body = new Polygon();
+        body.getPoints().addAll(new Double[]{
+                50.0, 100.0,
+                100.0, 75.0,
+                120.0, 75.0,
+                170.0, 100.0,
+                120.0, 125.0,
+                100.0, 125.0
         });
-        fighterJet.setFill(Color.BLACK);
-        fighterJet.setTranslateX(400);
-        fighterJet.setTranslateY(300);
-        return fighterJet;
+        body.setFill(Color.BLUE);
+
+        // Создаем лопасти вертолета
+        Polygon rotor = new Polygon();
+        rotor.getPoints().addAll(new Double[]{
+                85.0, 75.0,
+                115.0, 75.0,
+                110.0, 60.0,
+                90.0, 60.0
+        });
+        rotor.setFill(Color.DARKGRAY);
+
+        // Создаем хвост вертолета
+        Polygon tail = new Polygon();
+        tail.getPoints().addAll(new Double[]{
+                140.0, 90.0,
+                170.0, 90.0,
+                155.0, 100.0,
+                140.0, 100.0
+        });
+        tail.setFill(Color.DARKBLUE);
+        //TODO переделать вертолет на нормальный и разбить все по принципам ооп
+
+        // Добавляем все части на панель
+        helicopter.getChildren().addAll(body, rotor, tail);
+        helicopter.setTranslateX(400);
+        helicopter.setTranslateY(300);
+        return helicopter;
     }
 
     // Метод для движения истребителя
     private void moveFighterJet() {
-        fighterJet.setTranslateX(fighterJet.getTranslateX() + deltaX);
-        fighterJet.setTranslateY(fighterJet.getTranslateY() + deltaY);
+        helicopter.setTranslateX(helicopter.getTranslateX() + deltaX);
+        helicopter.setTranslateY(helicopter.getTranslateY() + deltaY);
 
         // Ограничение движения по экрану
-        if (fighterJet.getTranslateX() > 800) {
-            fighterJet.setTranslateX(0);
-        } else if (fighterJet.getTranslateX() < 0) {
-            fighterJet.setTranslateX(800);
+        if (helicopter.getTranslateX() > 800) {
+            helicopter.setTranslateX(0);
+        } else if (helicopter.getTranslateX() < 0) {
+            helicopter.setTranslateX(800);
         }
 
-        if (fighterJet.getTranslateY() > 600) {
-            fighterJet.setTranslateY(0);
-        } else if (fighterJet.getTranslateY() < 0) {
-            fighterJet.setTranslateY(600);
+        if (helicopter.getTranslateY() > 600) {
+            helicopter.setTranslateY(0);
+        } else if (helicopter.getTranslateY() < 0) {
+            helicopter.setTranslateY(600);
         }
     }
 
